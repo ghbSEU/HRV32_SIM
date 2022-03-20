@@ -1,6 +1,7 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
+#include "config.h"
 
 #define B000 0
 #define B001 1
@@ -139,15 +140,20 @@
 #define B1111110 0x7E
 #define B1111111 0x7F
 
- 
+
+extern int wdmemaddr;
+extern int wdmemdata;
+extern int wdmemflag;
+
 extern int dmem[dmem_size];
-
+extern int imem[imem_size/4];
 void decoder_excute(int inst);
-
+void cpulog();
 extern char *reg_name[];
 extern unsigned int pc_reg;
 extern unsigned int pc_reg_next;
 extern unsigned int rv_reg[32];
+extern unsigned int rv_reg_3[32];
 extern int inst_is_rvc;
 void addline2txt(char *data,char *filename);
 union inst{
@@ -213,5 +219,11 @@ union inst{
 			unsigned imm20:1;
 		}Jtype;
 	};
+
+
+signed int sext(unsigned int data,int length);
+
+#define INSTLOG() addline2txt(instout,"/home/ghb/HRV32/HRV32_SIM/instlog.txt")
+
 
 #endif

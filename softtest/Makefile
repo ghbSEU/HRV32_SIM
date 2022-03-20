@@ -1,4 +1,4 @@
-TOOLCHAIN := /home/ghb/gap/gap_riscv_toolchain_ubuntu_18/bin/riscv32-unknown-elf-
+TOOLCHAIN := /home/ghb/riscvtool/riscv-gnu-toolchain/bin/riscv32-unknown-elf-
 
 CC    = ${TOOLCHAIN}gcc
 AS    = ${TOOLCHAIN}as
@@ -23,17 +23,24 @@ HEXFLAGS	= -O ihex
 
 
 %.o : %.s
-	${AS} -march=rv32i -o $@ $^
-	${AS} -march=rv32i  crt0.s -o crt0.o
+	${AS} -march=rv32imc -mabi=ilp32 -o $@ $^
+	${AS} -march=rv32imc -mabi=ilp32 crt0.s -o crt0.o
 
 
 EXelf : ${OBJECTS} link.ld
-	${LINK} ${OBJDUMPFLAGS} link.ld ${CRTOBJ} ${OBJECTS} -o examples.elf 
+	${LINK} ${OBJDUMPFLAGS} link.ld  ${CRTOBJ} ${OBJECTS} -o examples.elf 
 
 
 EXhex : EXelf
 	${OBJCOPY} ${HEXFLAGS} examples.elf examples.hex 
 
+txt :
+	/home/ghb/riscvtool/riscv-gnu-toolchain/bin/riscv32-unknown-elf-objdump -S examples.elf
+	python hex2hex2.py
+	cat examples.hex2
+#	cat examples.hex2 > /mnt/hgfs/share/mem.dat
+	
+
 .PHONY :clean 
 clean:
-	rm test.o test.elf examples.hex examples.hex2
+	rm *.o examples.elf examples.hex examples.hex2

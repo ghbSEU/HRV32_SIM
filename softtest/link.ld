@@ -5,6 +5,7 @@ ENTRY( _start )
 MEMORY
 {
   flash : ORIGIN = 0x00, LENGTH = 0x10000000
+  ram :   ORIGIN = 0x10000000, LENGTH = 0x10000000
 }
 
 _start = 0x00;
@@ -19,9 +20,14 @@ SECTIONS
 {
   .text           :
   {
-    *(.text .text.*)
+    *(.text .text.*);
+    . = ALIGN(4);
   } >flash AT>flash :flash
-
+  .rodata           :
+  {
+    *(.rodata);
+    . = ALIGN(4);
+  } >flash AT>flash :flash
 }
 
 

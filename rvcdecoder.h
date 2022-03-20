@@ -1,6 +1,6 @@
 #ifndef _RVCDECODER_H_
 #define _RVCDECODER_H_
-
+#include "common.h"
 #define RVC_NUM 28
 enum rvcinst{c_nop=0,
              c_addi,
@@ -48,7 +48,11 @@ enum rvcinst{c_nop=0,
 #define B1110 0xE
 #define B1111 0xF
 
+
+
+
+
 #define CN(A,B,C,D) A*16*16*16+B*16*16+C*16+D
-
-
+void rvc_init();
+void rvc_dec_ex(unsigned short int inst);
 #endif
